@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.function.Executable
+import org.junit.jupiter.params.*
+import org.junit.jupiter.params.provider.*
+
 
 class Sandbox {
     fun add(a: Int, b: Int): Int {
@@ -7,7 +10,7 @@ class Sandbox {
     }
 }
 
-internal class SandboxTest {
+internal object SandboxTest {
     @Test
     internal fun `sequential assertions`() {
         val x = Sandbox()
@@ -45,6 +48,24 @@ internal class SandboxTest {
         Triple(2,3,5),
         Triple(3,3,6),
     )
+    
+    data class MyTestData(
+        val a: Int,
+        val b: Int,
+        val expectedSum: Int
+    )
+    
+    @JvmStatic
+    private fun otherTestData() = listOf(
+        MyTestData(2,2,4),
+        MyTestData(2,3,5),
+        MyTestData(3,3,6),
+    )
+    @ParameterizedTest
+    @MethodSource("otherTestData")
+    fun `from other test data - method source`(x : MyTestData) {
+        Assertions.assertEquals(x.expectedSum, Sandbox().add(x.a,x.b))
+    }
 
     @BeforeEach
     fun setUp() {

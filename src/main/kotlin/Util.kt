@@ -16,5 +16,9 @@ object Util {
     fun fromResources(name: String): File {
         return File(javaClass.classLoader.getResource(name).toURI())
     }
+    fun scale(k: Int, input: List<String>): List<String> {
+        val repeatRows = input.map { it.repeat(k) }
+        return (1..k).flatMap { repeatRows }
+    }
 }
 

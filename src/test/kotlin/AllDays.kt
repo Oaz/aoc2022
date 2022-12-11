@@ -126,14 +126,14 @@ internal object AllDays {
   
   @Test
   internal fun day11_part1() {
-    val sim = Day11(Util.getInputAsList(11),3)
-    assertEquals(107822, sim.playPart1().monkeyBusiness())
+    val sim = Day11Part1(Util.getInputAsList(11))
+    assertEquals(107822, sim.playAll().monkeyBusiness())
   }
   
   @Test
   internal fun day11_part2() {
-    val sim = Day11(Util.getInputAsList(11),1)
-    assertEquals(27267163742, sim.playPart2().monkeyBusiness())
+    val sim = Day11Part2(Util.getInputAsList(11))
+    assertEquals(27267163742, sim.playAll().monkeyBusiness())
   }
 
 }

@@ -68,7 +68,7 @@ internal object Test11 {
   
   @Test
   internal fun `read input in example`() {
-    val sim = Day11(example,3)
+    val sim = Day11Part1(example)
     assertEquals(4, sim.monkeys.count())
     assertEquals(expectedInitialInspectsForExample().map { it.first }, sim.initialInspects)
   }
@@ -76,7 +76,7 @@ internal object Test11 {
   @ParameterizedTest
   @MethodSource("expectedInitialInspectsForExample")
   internal fun `verify inspections`(x: Pair<MonkeyInspect,MonkeyInspect>) {
-    val sim = Day11(example,3)
+    val sim = Day11Part1(example)
     assertEquals(x.second, sim.proceed(x.first))
   }
   
@@ -110,7 +110,7 @@ internal object Test11 {
   
   @Test
   internal fun `play example`() {
-    val sim = Day11(example,3)
+    val sim = Day11Part1(example)
     assertEquals(expectedHoldingsForExample[0], sim.initialFocuses)
     val holding1 = sim.proceed(sim.initialFocuses)
     assertEquals(expectedHoldingsForExample[1], holding1)
@@ -122,8 +122,8 @@ internal object Test11 {
   
   @Test
   internal fun `count activity on example`() {
-    val sim = Day11(example,3)
-    val result = sim.playPart1()
+    val sim = Day11Part1(example)
+    val result = sim.playAll()
     assertEquals( listOf(
       makeHolding(0, listOf(10, 12, 14, 26, 34),101),
       makeHolding(1, listOf(245, 93, 53, 199, 115),95),
@@ -135,27 +135,27 @@ internal object Test11 {
   
   @Test
   internal fun part1() {
-    val sim = Day11(Util.getInputAsList(11),3)
-    assertEquals(107822, sim.playPart1().monkeyBusiness())
+    val sim = Day11Part1(Util.getInputAsList(11))
+    assertEquals(107822, sim.playAll().monkeyBusiness())
   }
   
   @Test
   internal fun `play example on part 2`() {
-    val sim = Day11(example,1)
-    assertEquals(listOf<Long>(2,4,3,6), sim.proceed(sim.initialFocuses).map { it.activity })
-    assertEquals(listOf<Long>(99,97,8,103), sim.playPart1().map { it.activity })
+    val sim = Day11Part2(example)
+    assertEquals(listOf<Long>(2,4,3,6), sim.play(1).map { it.activity })
+    assertEquals(listOf<Long>(99,97,8,103), sim.play(20).map { it.activity })
   }
   
   @Test
   internal fun `monkeyBusiness on example part 2`() {
-    val sim = Day11(example,1)
-    assertEquals(2713310158, sim.playPart2().monkeyBusiness())
+    val sim = Day11Part2(example)
+    assertEquals(2713310158, sim.playAll().monkeyBusiness())
   }
   
   @Test
   internal fun part2() {
-    val sim = Day11(Util.getInputAsList(11),1)
-    assertEquals(27267163742, sim.playPart2().monkeyBusiness())
+    val sim = Day11Part2(Util.getInputAsList(11))
+    assertEquals(27267163742, sim.playAll().monkeyBusiness())
   }
 
 }

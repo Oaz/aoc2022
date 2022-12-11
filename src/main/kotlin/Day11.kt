@@ -1,6 +1,6 @@
 import java.lang.Exception
 
-class Day11(input: List<String>, private val relief: Long) {
+open class Day11(input: List<String>, private val relief: Long, private val allRounds: Int) {
   
   companion object {
     fun readOperation(input: String): (Long) -> Long =
@@ -37,7 +37,7 @@ class Day11(input: List<String>, private val relief: Long) {
   fun proceed(inspect: MonkeyInspect) = monkeys[inspect.monkeyId].inspect(inspect.worryLevel, relief, modulo)
   
   data class Focus(val monkeyId: Int, val worryLevels: List<MonkeyInspect>, val activity: Long) {
-    fun add(levels: List<MonkeyInspect>): Focus = Focus(monkeyId, worryLevels + levels, activity)
+    fun add(levels: List<MonkeyInspect>) = Focus(monkeyId, worryLevels + levels, activity)
     fun allThrown() = Focus(monkeyId, listOf(), activity + worryLevels.count())
   }
   
@@ -51,9 +51,11 @@ class Day11(input: List<String>, private val relief: Long) {
   fun proceed(focuses: List<Focus>) = monkeys.fold(focuses) { hs, _ -> monkeyPlay(hs) }
   
   val initialFocuses = initialInspects.groupBy { it.monkeyId }.map { Focus(it.key, it.value, 0) }
-  private fun play(rounds: Int) = (1..rounds).fold(initialFocuses) { holdings, _ -> proceed(holdings) }
-  fun playPart1() = play(20)
-  fun playPart2() = play(10000)
+  fun play(rounds: Int) = (1..rounds).fold(initialFocuses) { holdings, _ -> proceed(holdings) }
+  fun playAll() = play(allRounds)
 }
 
 fun List<Day11.Focus>.monkeyBusiness()= this.map { it.activity }.sortedDescending().take(2).reduce { a1, a2 -> a1 * a2 }
+
+class Day11Part1(input:List<String>) : Day11(input,3,20)
+class Day11Part2(input:List<String>) : Day11(input,1,10000)

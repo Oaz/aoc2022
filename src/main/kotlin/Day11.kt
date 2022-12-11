@@ -3,16 +3,17 @@ import java.lang.Exception
 open class Day11(input: List<String>, private val relief: Long, private val allRounds: Int) {
   
   companion object {
-    fun readOperation(input: String): (Long) -> Long =
-      if (input == "old * old") { x -> x * x }
-      else {
-        val param = input.substring(6).toLong()
-        when (input.substring(4, 5)) {
-          "+" -> { x -> x + param }
-          "*" -> { x -> x * param }
-          else -> throw Exception("Unknown operation: $input")
-        }
+    fun readOperation(input: String): (Long) -> Long {
+      val (operator, operand) = parseOperation("""old ([+*]) (\d+|old)""".toRegex().matchEntire(input))
+      return when {
+        operand == null -> { x -> x * x }
+        operator == "+" -> { x -> x + operand }
+        operator == "*" -> { x -> x * operand }
+        else -> throw Exception("Unknown operation: $input")
       }
+    }
+    
+    private fun parseOperation(matchResult: MatchResult?) = Pair(matchResult.at(1), matchResult.at(2).toIntOrNull())
   }
   
   class Monkey(input: List<String>) {
@@ -51,11 +52,12 @@ open class Day11(input: List<String>, private val relief: Long, private val allR
   fun proceed(focuses: List<Focus>) = monkeys.fold(focuses) { hs, _ -> monkeyPlay(hs) }
   
   val initialFocuses = initialInspects.groupBy { it.monkeyId }.map { Focus(it.key, it.value, 0) }
-  fun play(rounds: Int) = (1..rounds).fold(initialFocuses) { holdings, _ -> proceed(holdings) }
+  fun play(rounds: Int) = generateSequence(initialFocuses, ::proceed).drop(rounds).first()
   fun playAll() = play(allRounds)
 }
 
-fun List<Day11.Focus>.monkeyBusiness()= this.map { it.activity }.sortedDescending().take(2).reduce { a1, a2 -> a1 * a2 }
+fun List<Day11.Focus>.monkeyBusiness() =
+  this.map { it.activity }.sortedDescending().take(2).reduce { a1, a2 -> a1 * a2 }
 
-class Day11Part1(input:List<String>) : Day11(input,3,20)
-class Day11Part2(input:List<String>) : Day11(input,1,10000)
+class Day11Part1(input: List<String>) : Day11(input, 3, 20)
+class Day11Part2(input: List<String>) : Day11(input, 1, 10000)

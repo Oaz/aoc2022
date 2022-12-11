@@ -22,3 +22,6 @@ object Util {
     }
 }
 
+fun MatchResult?.at(index: Int) = this?.groups?.get(index)?.value!!
+
+

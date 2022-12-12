@@ -135,6 +135,18 @@ internal object AllDays {
     val sim = Day11Part2(Util.getInputAsList(11))
     assertEquals(27267163742, sim.playAll().monkeyBusiness())
   }
+  
+  @Test
+  internal fun day12_part1() {
+    val sim = Day12(Util.getInputAsList(12))
+    assertEquals(383, sim.fewestStepsToEnd().length)
+  }
+  
+  @Test
+  internal fun day12_part2() {
+    val sim = Day12(Util.getInputAsList(12))
+    assertEquals(377, sim.fewestStepsToMultipleStartChoices().length)
+  }
 
 }
 

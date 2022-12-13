@@ -80,8 +80,8 @@ class AStar<NODE> private constructor(
     var items = setOf<NODE>()
     override fun isNotEmpty() = items.isNotEmpty()
     override fun peek() : NODE {
-      val selected = items.minBy { score(it) }
-      items = items - selected
+      val selected = items.minByOrNull(score)
+      items = items - selected!!
       return selected
     }
     override fun pokeImpl(node : NODE) {

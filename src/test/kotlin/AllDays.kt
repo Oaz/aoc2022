@@ -1,5 +1,7 @@
 import Day04.oneRangeFullyContainTheOther
 import Day04.rangesOverlap
+import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 
@@ -146,6 +148,18 @@ internal object AllDays {
   internal fun day12_part2() {
     val sim = Day12(Util.getInputAsList(12))
     assertEquals(377, sim.fewestStepsToMultipleStartChoices().length)
+  }
+  
+  @Test
+  internal fun day13_part1() {
+    val packets = Day13(Util.getInputAsList(13))
+    MatcherAssert.assertThat(packets.sumOfIndicesOfPairsInRightOrder(), CoreMatchers.`is`(CoreMatchers.equalTo(5675)))
+  }
+  
+  @Test
+  internal fun day13_part2() {
+    val packets = Day13(Util.getInputAsList(13))
+    MatcherAssert.assertThat(packets.decoderKey(), CoreMatchers.`is`(CoreMatchers.equalTo(20383)))
   }
 
 }

@@ -1,8 +1,8 @@
 class Day14(input: List<String>) {
-  private val blocks = input.flatMap(::readPath).toSet()
-  private val depth = blocks.maxOf { it.y }
+  private val rocks = input.flatMap(::readPath).toSet()
+  private val depth = rocks.maxOf { it.y }
   private val source = XY(500, 0)
-  val cave = Cave(blocks, source, depth)
+  val cave = Cave(rocks, source, depth)
   
   fun pourUntilVoid() = pourUntil { it.goesIntoVoid }
   fun pourUntilBlocked() = pourUntil { it.hasSourceBlocked }
@@ -49,7 +49,7 @@ class Day14(input: List<String>) {
   
   fun fasterPourUntilBlocked(): Int {
     val above = listOf(XY(-1, -1), XY(0, -1), XY(1, -1))
-    val remainEmpty = generateSequence(true to blocks) { (canAdd, cannotFill) ->
+    val remainEmpty = generateSequence(true to rocks) { (canAdd, cannotFill) ->
       if (canAdd) {
         val candidates = cannotFill.map { it + XY(0, 1) }.toSet().filter { it.y <= depth + 1 } - cannotFill
         val safe = candidates.filter { candidate -> above.map { candidate + it }.all { it in cannotFill } }.toSet()

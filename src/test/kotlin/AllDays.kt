@@ -165,13 +165,13 @@ internal object AllDays {
   @Test
   internal fun day14_part1() {
     val sim = Day14(Util.getInputAsList(14))
-    assertEquals(719, sim.pourUntilVoid().sandCount)
+    assertEquals(719, sim.pourUntilVoid())
   }
   
   @Test
   internal fun day14_part2() {
     val sim = Day14(Util.getInputAsList(14))
-    assertEquals(23390, sim.maxSand())
+    assertEquals(23390, sim.fasterPourUntilBlocked())
   }
 
 }

@@ -15,7 +15,7 @@ internal object Test14 {
   @ParameterizedTest
   @MethodSource("points")
   internal fun `read points`(x: Pair<String, XY>) {
-    assertEquals(x.second, Day14.readPoint(x.first))
+    assertEquals(x.second, Day14.readXY(x.first))
   }
   
   @JvmStatic
@@ -63,44 +63,44 @@ internal object Test14 {
   @Test
   internal fun `pour into example`() {
     val sim = Day14(example)
-    val cave1 = sim.cave.pour()
+    val cave1 = sim.cave.pourOneSand()
     assertEquals(setOf(XY(500,8)), cave1.blocks - sim.cave.blocks)
-    val cave2 = cave1.pour()
+    val cave2 = cave1.pourOneSand()
     assertEquals(setOf(XY(499,8)), cave2.blocks - cave1.blocks)
-    val cave3 = cave2.pour()
+    val cave3 = cave2.pourOneSand()
     assertEquals(setOf(XY(501,8)), cave3.blocks - cave2.blocks)
-    val cave4 = cave3.pour()
+    val cave4 = cave3.pourOneSand()
     assertEquals(setOf(XY(500,7)), cave4.blocks - cave3.blocks)
-    val cave5 = cave4.pour()
+    val cave5 = cave4.pourOneSand()
     assertEquals(setOf(XY(498,8)), cave5.blocks - cave4.blocks)
-    val cave6 = cave5.pour()
+    val cave6 = cave5.pourOneSand()
     assertEquals(setOf(XY(499,7)), cave6.blocks - cave5.blocks)
     assertEquals(6, cave6.sandCount)
   }
 
   @Test
   internal fun `part 1 in example`() {
-    val cave = Day14(example).pourUntilVoid()
-    assertEquals(24, cave.sandCount)
+    val sim = Day14(example)
+    assertEquals(24, sim.pourUntilVoid())
   }
 
   @Test
   internal fun part1() {
-    val cave = Day14(Util.getInputAsList(14)).pourUntilVoid()
-    assertEquals(719, cave.sandCount)
+    val sim = Day14(Util.getInputAsList(14))
+    assertEquals(719, sim.pourUntilVoid())
   }
 
   @Test
   internal fun `part 2 in example`() {
     val sim = Day14(example)
-    assertEquals(93, sim.pourUntilBlocked().sandCount)
-    assertEquals(93, sim.maxSand())
+    assertEquals(93, sim.pourUntilBlocked())
+    assertEquals(93, sim.fasterPourUntilBlocked())
   }
 
   @Test
   internal fun part2() {
     val sim = Day14(Util.getInputAsList(14))
-    assertEquals(23390, sim.maxSand())
+    assertEquals(23390, sim.fasterPourUntilBlocked())
   }
 
 }

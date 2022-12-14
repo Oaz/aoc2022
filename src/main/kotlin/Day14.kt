@@ -14,7 +14,7 @@ class Day14(input: List<String>) {
     val goesIntoVoid: Boolean = false, val hasSourceBlocked: Boolean = false
   ) {
     private val fallingDirections = listOf(XY(0, 1), XY(-1, 1), XY(1, 1))
-    fun pourOneSand(): Cave = if (source in blocks)
+    fun pourOneSand() = if (source in blocks)
       copy(hasSourceBlocked = true)
     else {
       val landing = generateSequence(source) { sand ->
@@ -28,8 +28,8 @@ class Day14(input: List<String>) {
   }
   
   data class XY(val x: Int, val y: Int) {
-    operator fun plus(other: XY): XY = XY(x + other.x, y + other.y)
-    operator fun minus(other: XY): XY = XY(x - other.x, y - other.y)
+    operator fun plus(other: XY) = XY(x + other.x, y + other.y)
+    operator fun minus(other: XY) = XY(x - other.x, y - other.y)
   }
   
   companion object {

@@ -23,7 +23,7 @@ class Day07(private val input: String) {
   fun sizeOfFolderToDelete(): Long {
     val unusedSpace = 70000000 - folderTotalSize["/"]!!
     val neededSpace = 30000000 - unusedSpace
-    return foldersTotalSizes.filter { it >= neededSpace }.min()
+    return foldersTotalSizes.filter { it >= neededSpace }.minOrNull()!!
   }
   
   data class File(val name: String, val size: Long)

@@ -162,6 +162,17 @@ internal object AllDays {
     val packets = Day13(Util.getInputAsList(13))
     MatcherAssert.assertThat(packets.decoderKey(), `is`(CoreMatchers.equalTo(20383)))
   }
+  @Test
+  internal fun day14_part1() {
+    val sim = Day14(Util.getInputAsList(14))
+    assertEquals(719, sim.pourUntilVoid().sandCount)
+  }
+  
+  @Test
+  internal fun day14_part2() {
+    val sim = Day14(Util.getInputAsList(14))
+    assertEquals(23390, sim.maxSand())
+  }
 
 }
 

@@ -199,6 +199,18 @@ internal object AllDays {
     val sim = Day16(Util.getInputAsList(16))
     assertEquals(2455, sim.mostPressureInDuo())
   }
+  
+  @Test
+  internal fun day17_part1() {
+    val sim = Day17(Util.getInputAsString(17))
+    assertEquals(3173, sim.findHeight(2022))
+  }
+  
+  @Test
+  internal fun day17_part2() {
+    val sim = Day17(Util.getInputAsString(17))
+    assertEquals(1570930232582, sim.findHeight(1000000000000))
+  }
 }
 
 

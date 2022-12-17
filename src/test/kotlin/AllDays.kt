@@ -173,7 +173,18 @@ internal object AllDays {
     val sim = Day14(Util.getInputAsList(14))
     assertEquals(23390, sim.fasterPourUntilBlocked())
   }
-
+  
+  @Test
+  internal fun day15_part1() {
+    val sim = Day15(Util.getInputAsList(15))
+    assertEquals(4961647, sim.positionsWithNoBeaconInRow(2000000))
+  }
+  
+  //@Test
+  internal fun day15_part2() {
+    val sim = Day15(Util.getInputAsList(15))
+    assertEquals(12274327017867, sim.tuningFrequency(4000000))
+  }
 }
 
 

@@ -1,18 +1,19 @@
 import java.util.PriorityQueue
 
 class AStar<NODE> private constructor(
-  private val nodes:List<NODE>,
   val neighbors: (NODE) -> List<Pair<NODE,Int>>,
   val heuristic: (NODE) -> Int,
   val newOpenSet: ((NODE) -> Int) -> OpenSet<NODE>
 )
 {
   companion object {
-    fun <NODE> on(nodes:List<NODE>) = Builder(nodes).usingPriorityQueue()
+    fun <NODE> on(nodes:List<NODE>) = init(Builder<NODE>())
+    fun <NODE> on(node:NODE) = init(Builder<NODE>())
+    fun <NODE> on() = init(Builder<NODE>())
+    private fun <NODE> init(builder:Builder<NODE>) = builder.usingPriorityQueueAndSet()
   }
   
   data class Builder<NODE> internal constructor(
-    val nodes:List<NODE>,
     var newOpenSet: (((NODE) -> Int) -> OpenSet<NODE>)? = null,
     var neighbors: ((NODE) -> List<Pair<NODE,Int>>)? = null,
     var heuristic: ((NODE) -> Int)? = null) {
@@ -21,7 +22,8 @@ class AStar<NODE> private constructor(
     fun withHeuristic(heuristic: (NODE) -> Int) = apply { this.heuristic = heuristic }
     fun usingPriorityQueue() = apply { this.newOpenSet = { OpenSetPQ(it) } }
     fun usingSimpleSet() = apply { this.newOpenSet = { OpenSetS(it) } }
-    fun build() = AStar(nodes, neighbors!!, heuristic!!, newOpenSet!!)
+    fun usingPriorityQueueAndSet() = apply { this.newOpenSet = { OpenSetPQS(it) } }
+    fun build() = AStar(neighbors!!, heuristic!!, newOpenSet!!)
   }
   
   data class Result<NODE>(
@@ -39,10 +41,8 @@ class AStar<NODE> private constructor(
   fun search(start:NODE, goals:Set<NODE>) = search(start) { goals.contains(it) }
   
   fun search(start:NODE, goalReached:(NODE) -> Boolean): Result<NODE> {
-    val gScore = nodes.associateWith { Int.MAX_VALUE }.toMutableMap()
-    gScore[start] = 0
-    val fScore = nodes.associateWith { Int.MAX_VALUE }.toMutableMap()
-    fScore[start] = heuristic(start)
+    val gScore = listOf(start).associateWith { 0 }.toMutableMap()
+    val fScore = listOf(start).associateWith { heuristic(start) }.toMutableMap()
     val openSet = newOpenSet { fScore[it]!! }
     openSet.poke(start)
     val cameFrom = mutableMapOf<NODE,NODE>()
@@ -53,8 +53,8 @@ class AStar<NODE> private constructor(
       if(goalReached(current))
         return Result(start, generateSequence(current) { cameFrom[it]!! }.takeWhile { it != start }, openSet)
       for((neighbor, distance) in neighbors(current)) {
-        val tentativeGScore = gScore[current]!! + distance
-        if(tentativeGScore < gScore[neighbor]!!) {
+        val tentativeGScore = gScore.getOrDefault(current, Int.MAX_VALUE) + distance
+        if(tentativeGScore < gScore.getOrDefault(neighbor, Int.MAX_VALUE)) {
           cameFrom[neighbor] = current
           gScore[neighbor] = tentativeGScore
           fScore[neighbor] = tentativeGScore + heuristic(neighbor)
@@ -100,6 +100,24 @@ class AStar<NODE> private constructor(
     override fun pokeImpl(node : NODE) {
       if(!items.contains(node))
         items.add(node)
+    }
+  }
+  
+  private class OpenSetPQS<NODE>(val score:(NODE) -> Int) : OpenSet<NODE>() {
+    var pq = PriorityQueue(compareBy<NODE> { score(it) })
+    val s = setOf<NODE>().toMutableSet()
+    override fun isNotEmpty() = s.isNotEmpty()
+    override fun peek() : NODE {
+      val selected = pq.peek()
+      pq.remove(selected)
+      s.remove(selected)
+      return selected
+    }
+    override fun pokeImpl(node : NODE) {
+      if(s.contains(node))
+        return
+      pq.add(node)
+      s.add(node)
     }
   }
   

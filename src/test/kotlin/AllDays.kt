@@ -211,6 +211,19 @@ internal object AllDays {
     val sim = Day17(Util.getInputAsString(17))
     assertEquals(1570930232582, sim.findHeight(1000000000000))
   }
+  
+  @Test
+  internal fun day18_part1() {
+    val sim = Day18(Util.getInputAsList(18))
+    assertEquals(3412, sim.totalVisibleFaces())
+  }
+  
+  @Disabled
+  @Test
+  internal fun day18_part2() {
+    val sim = Day18(Util.getInputAsList(18))
+    assertEquals(2018, sim.exteriorFaces())
+  }
 }
 
 

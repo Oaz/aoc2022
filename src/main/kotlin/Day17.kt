@@ -33,14 +33,13 @@ class Day17(input: String) {
     fun pushAndFall(jets: List<Direction>) =
       pushAndFall(jets[jetIndex]).copy(jetIndex = (jetIndex + 1) % jets.size)
     
-    fun pushAndFall(direction: Direction): Falling {
-      val afterPush = couple.push(direction)
-      val newCouple = afterPush.down()
-      return if (newCouple.clash())
-        appear((shapeIndex + 1) % shapes.size, jetIndex, afterPush.merge())
-      else
-        Falling(newCouple, shapeIndex, jetIndex)
-    }
+    fun pushAndFall(direction: Direction) =
+      couple.push(direction).let { afterPush ->
+        afterPush.down().let { newCouple ->
+          if (newCouple.clash()) appear((shapeIndex + 1) % shapes.size, jetIndex, afterPush.merge())
+          else copy(couple = newCouple)
+        }
+      }
     
     companion object {
       fun appear(shapeIndex: Int, jetIndex: Int, tower: Zone) =

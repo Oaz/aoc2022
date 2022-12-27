@@ -92,11 +92,7 @@ class AStar<NODE> private constructor(
   private class OpenSetPQ<NODE>(val score:(NODE) -> Int) : OpenSet<NODE>() {
     var items = PriorityQueue(compareBy<NODE> { score(it) })
     override fun isNotEmpty() = items.isNotEmpty()
-    override fun peek() : NODE {
-      val selected = items.peek()
-      items.remove(selected)
-      return selected
-    }
+    override fun peek() : NODE = items.poll()!!
     override fun pokeImpl(node : NODE) {
       if(!items.contains(node))
         items.add(node)
@@ -108,8 +104,7 @@ class AStar<NODE> private constructor(
     val s = setOf<NODE>().toMutableSet()
     override fun isNotEmpty() = s.isNotEmpty()
     override fun peek() : NODE {
-      val selected = pq.peek()
-      pq.remove(selected)
+      val selected = pq.poll()
       s.remove(selected)
       return selected
     }

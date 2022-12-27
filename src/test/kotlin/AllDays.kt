@@ -224,6 +224,19 @@ internal object AllDays {
     val sim = Day18(Util.getInputAsList(18))
     assertEquals(2018, sim.exteriorFaces())
   }
+  
+  @Test
+  internal fun day19_part1() {
+    val sim = Day19(Util.getInputAsList(19))
+    assertEquals(1427, sim.qualityLevelsPart1())
+  }
+  
+  @Disabled
+  @Test
+  internal fun day19_part2() {
+    val sim = Day19(Util.getInputAsList(19))
+    assertEquals(4400, sim.qualityLevelsPart2())
+  }
 }
 
 

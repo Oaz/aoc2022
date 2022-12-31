@@ -237,6 +237,18 @@ internal object AllDays {
     val sim = Day19(Util.getInputAsList(19))
     assertEquals(4400, sim.qualityLevelsPart2())
   }
+  
+  @Test
+  internal fun day20_part1() {
+    val sim = Day20(Util.getInputAsList(20))
+    assertEquals(4066, sim.sumOfGroveCoordinates()) // too high
+  }
+  
+  @Test
+  internal fun day20_part2() {
+    val sim = Day20(Util.getInputAsList(20), 811589153)
+    assertEquals(6704537992933L, sim.sumOfGroveCoordinates(10))
+  }
 }
 
 

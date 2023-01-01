@@ -249,6 +249,18 @@ internal object AllDays {
     val sim = Day20(Util.getInputAsList(20), 811589153)
     assertEquals(6704537992933L, sim.sumOfGroveCoordinates(10))
   }
+  
+  @Test
+  internal fun day21_part1() {
+    val sim = Day21(Util.getInputAsList(21))
+    assertEquals(75147370123646, sim.findRootYell())
+  }
+  
+  @Test
+  internal fun day21_part2() {
+    val sim = Day21(Util.getInputAsList(21))
+    assertEquals(3423279932937, sim.findHumanYell())
+  }
 }
 
 
